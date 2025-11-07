@@ -1,28 +1,75 @@
-Package: BuildABiocWorkshop
-Title: Bioconductor or R Workshop Template and Github Actions
-Version: 2.0.1
+Package: MarkerIdentificationWorkflow
+Title: MarkerIdentificationWorkflow
+Version: 0.1.0
 Authors@R: 
-    person(given = "Sean",
-           family = "Davis",
-           role = c("aut", "cre"),
-           email = "seandavi@gmail.com",
-           comment = c(ORCID = "0000-0002-8991-6458"))
-Description: This package serves as a template for using github actions to 
-    prepare a Bioconductor Workshop package for use. In particular,
-    a pkgdown website and docker image are generated based on workflow 
-    settings. 
+    c(
+      person(
+        given = "Jinjin",
+        family = "Chen",
+        role = c("aut", "cre"),
+        email = "chen.j@wehi.edu.au",
+        comment = c(ORCID = "0000-0001-7923-5723")
+      ),
+      person(
+        "Liyang",
+        "Fei",
+        email = "Liyang.Fei@petermac.org",
+        role = c("aut"),
+        comment = c(ORCID = '0000-0003-4864-7033')
+      )
+    )
+Description: TThis workflow package shows how to use mastR and smartid to identify markers from transcriptomic data. 
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
+Workflow: True
+VignetteBuilder: knitr
+biocViews: Software, GeneExpression, Transcriptomics
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.1.0
+RoxygenNote: 7.3.2
+Collate: 
+    'AllClasses.R'
+    'tf_idf_iae_wrappers.R'
+    'score.R'
+    'AllGenerics.R'
+    'gs_score-methods.R'
+    'plot.R'
+    'scale_mgm.R'
+    'smartid-package.R'
+    'score-methods.R'
+    'select_markers.R'
+    'top_markers.R'
+    'top_markers-methods.R'
 Depends: 
-    Biobase
+    R (>= 4.4)
+Imports: 
+    Biobase,
+    dplyr,
+    ggplot2,
+    graphics,
+    Matrix,
+    mclust,
+    methods,
+    mixtools,
+    sparseMatrixStats,
+    stats,
+    SummarizedExperiment,
+    tidyr,
+    utils
 Suggests: 
+    pkgdown,
+    rmarkdown,
+    BiocStyle,
+    dbscan,
+    ggpubr,
     knitr,
     rmarkdown,
-    pkgdown
-URL: https://seandavi.github.io/BuildABiocWorkshop/
-BugReports: https://github.com/seandavi/BuildABiocWorkshop/issues/new/choose
+    scater,
+    splatter,
+    testthat (>= 3.0.0),
+    tidytext,
+    UpSetR
+URL: https://gene233.github.io/MarkerIdentificationWorkflow
+BugReports: https://github.com/gene233/MarkerIdentificationWorkflow/issues
 VignetteBuilder: knitr
-DockerImage: ghcr.io/seandavi/buildabiocworkshop:latest
+DockerImage: ghcr.io/gene233/markeridentificationworkflow:latest

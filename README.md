@@ -1,52 +1,85 @@
-# BuildABiocWorkshop
+# Marker identification analysis workshop
 
-This package is a template for building a Bioconductor workshop. The package
-includes Github actions to:
+## Overview
 
-1. Set up bioconductor/bioconductor_docker:devel on Github resources
-2. Install package dependencies for your package (based on the `DESCRIPTION` file)
-3. Run `rcmdcheck::rcmdcheck`
-4. Build a pkgdown website and push it to github pages
-5. Build a docker image with the installed package and dependencies and deploy to [the Github Container Repository](https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-container-registry#pulling-container-images) at the name `ghcr.io/gihub_user/repo_name`, all lowercase. 
+This workshop will focus on performing marker identification analysis of transcriptomic data and visualising the results. We will identify markers on single-cell RNA-seq data using methods in the `smartid` package to explore feature importance in class and individual samples. Following this, we will perform gene-set scoring using tools from the `smartid` package. Overall, we will demonstrate a TF-IDF-based approach to process the data, identify the markers, visualise and interpret resutls using `smartid` package.
 
-## Responsibilities
+The workshop will be organised into two broad sections:
+* Calculate score for each feature in each sample
+* Scale and transform scores in regard of class
+* Identify markers for each class based on GMM
 
-Package authors are primarily responsible for:
+Detailed material can be found [here](https://gene233.github.io/MarkerIdentificationWorkflow/articles/workshop_smartid.html).
 
-1. Creating a landing site of their choosing for their workshops (a website). This website should be listed in the `DESCRIPTION` file as the `URL`.
-2. Creating a docker image that will contain workshop materials and the installed packages necessary to run those materials. The name of the resulting docker image, including "tag" if desired, should be listed in a non-standard tag, `DockerImage:` in the `DESCRIPTION` file. 
+## Pre-requisites 
 
-Both of those tasks can be accomplished using the Github actions included in this template package. The vignette accompanying this package describes how to accomplish both of these tasks.
+The course is aimed at PhD students, Master's students, and third & fourth year undergraduate students. 
+Some basic R knowledge is assumed - this is not an introduction to R course. 
+If you are not familiar with the R statistical programming language it is compulsory that you work through an introductory R course before you attend this workshop.
 
-## Details
+## _R_ packages used
 
-For detailed instructions, see the `How to build a workshop` article/vignette.
+The following key R packages will be used: 
 
-## Results of successful deployment
+* `smartid`
+* `mclust`
+* `mastR`
 
-- A working docker image that contains the installed package and dependencies.
-- An up-to-date `pkgdown` website at https://YOURUSERNAME.github.io/YOURREPOSITORYNAME/
-- Docker image will be tagged with `latest`, `sha-XXXXXX` where `XXXXXX` is the hash of the current `master` commit, and `master`. 
+## Time outline
 
-## To use the resulting image:
+| Activity                                                        | Time |
+|-----------------------------------------------------------------|------|
+| Introduction & setup                                            | 15m  |
+| Part 1. Calculate score for each feature in each sample         | 20m  |
+| Part 2. Scale and transform scores in regard of class           | 20m  |
+| Part 3. Identify markers for each class based on GMM            | 20m  |
+| Q & A                                                           | 15m  |
 
-```sh
-docker run -e PASSWORD=<choose_a_password_for_rstudio> -p 8787:8787 YOURDOCKERIMAGENAME
+
+## Workshop goals and objectives
+
+### Learning goals
+
+ - Learn how to perform marker identification on scRNA-seq data in R.
+ - Understand the challenges caused by rare population within scRNA-seq data.
+ - Understand the importance of marker findings.
+
+### Learning objectives
+
+ - Perform a marker identification analysis and interpret the results.
+ - Apply smartid to identify highly-specific markers for rare populations and to validate the results using scoring method in `smartid`.
+
+## Workshop package installation 
+
+### Guide
+
+This is necessary in order to reproduce the code shown in the workshop. 
+The workshop is designed for R `4.5` and can be installed using one of the two ways below.
+
+### Via Docker image
+
+If you're familiar with [Docker](https://docs.docker.com/get-docker/) you could use the Docker image which has all the software pre-configured to the correct versions.
+
 ```
-Once running, navigate to http://localhost:8787/ and then login with `rstudio`:`yourchosenpassword`. 
-
-To try with **this** repository docker image:
-
-```sh
-docker run -e PASSWORD=abc -p 8787:8787 ghcr.io/bioconductor/buildabiocworkshop
+docker run -e PASSWORD=password -p 8787:8787 gene233/markeridentificationworkflow:latest
 ```
 
-*NOTE*: Running docker that uses the password in plain text like above exposes the password to others 
-in a multi-user system (like a shared workstation or compute node). In practice, consider using an environment 
-variable instead of plain text to pass along passwords and other secrets in docker command lines. 
+Once running, navigate to <http://localhost:8787/> and then login with
+`Username:rstudio` and `Password:password`.
 
+You should see the Rmarkdown file with all the workshop code which you can run.
 
-## Whatcha get
+### Via GitHub
 
-- https://bioconductor.github.io/BuildABiocWorkshop
-- A Docker image that you can run locally, in the cloud, or (usually) even as a singularity container on HPC systems. 
+Alternatively, you could install the workshop using the commands below in R `4.5`.
+
+```
+install.packages('remotes')
+
+# Install workshop package
+remotes::install_github("Gene233/MarkerIdentificationWorkflow", build_vignettes = TRUE)
+
+# To view vignettes
+library(MarkerIdentificationWorkflow)
+browseVignettes("MarkerIdentificationWorkflow")
+```

@@ -71,5 +71,4 @@ Suggests:
     UpSetR
 URL: https://gene233.github.io/MarkerIdentificationWorkflow
 BugReports: https://github.com/gene233/MarkerIdentificationWorkflow/issues
-VignetteBuilder: knitr
 DockerImage: ghcr.io/gene233/markeridentificationworkflow:latest

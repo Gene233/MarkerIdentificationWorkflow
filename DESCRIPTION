@@ -44,7 +44,6 @@ Depends:
     R (>= 4.4)
 Imports: 
     Biobase,
-    ComplexHeatmap,
     dplyr,
     ggplot2,
     graphics,
@@ -71,7 +70,17 @@ Suggests:
     splatter,
     testthat (>= 3.0.0),
     tidytext,
-    UpSetR
+    UpSetR,
+    clusterProfiler,
+    ComplexHeatmap,
+    depmap,
+    enrichplot,
+    ggrepel,
+    gridExtra,
+    jsonlite,
+    RobustRankAggreg,
+    rvest,
+    singscore
 URL: https://gene233.github.io/MarkerIdentificationWorkflow
 BugReports: https://github.com/gene233/MarkerIdentificationWorkflow/issues
 DockerImage: ghcr.io/gene233/markeridentificationworkflow:latest

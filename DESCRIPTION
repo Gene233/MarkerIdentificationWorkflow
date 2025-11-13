@@ -76,6 +76,7 @@ Suggests:
     depmap,
     enrichplot,
     ggrepel,
+    ggvenn,
     gridExtra,
     jsonlite,
     RobustRankAggreg,

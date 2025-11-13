@@ -49,6 +49,9 @@
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
+      <a href="../articles/workshop_mastR.html">mastR: Markers Automated Screening Tool in R</a>
+    </li>
+    <li>
       <a href="../articles/workshop_smartid.html">A quick start guide to smartid: Scoring and MARker selection method based on modified Tf-IDf</a>
     </li>
   </ul>
@@ -85,7 +88,7 @@ Biology, University of Melbourne, Parkville, VIC 3010,
 Australia<br><a class="author_email" href="mailto:#"></a><a href="mailto:chen.j@wehi.edu.au" class="email">chen.j@wehi.edu.au</a>
       </address>
                   
-            <h4 data-toc-skip class="date">11 Nov 2025</h4>
+            <h4 data-toc-skip class="date">13 Nov 2025</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/gene233/MarkerIdentificationWorkflow/blob/devel/vignettes/workshop_smartid.Rmd" class="external-link"><code>vignettes/workshop_smartid.Rmd</code></a></small>
       <div class="hidden name"><code>workshop_smartid.Rmd</code></div>
@@ -157,11 +160,11 @@ as a negative control group.</p>
 <span></span>
 <span><span class="co">## get up markers based on fold change</span></span>
 <span><span class="va">fc</span> <span class="op">&lt;-</span> <span class="fl">1</span></span>
-<span><span class="va">cols</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"DEFacGroup"</span>, <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq_along</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="va">data_sim</span><span class="op">$</span><span class="va">Group</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="va">defac</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html" class="external-link">rowData</a></span><span class="op">(</span><span class="va">data_sim</span><span class="op">)</span><span class="op">[</span>, <span class="va">cols</span><span class="op">]</span><span class="op">)</span></span>
-<span><span class="va">up</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="va">cols</span>, \<span class="op">(</span><span class="va">id</span><span class="op">)</span></span>
+<span><span class="va">cols</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"DEFacGroup"</span>, <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq_along</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="va">data_sim</span><span class="op">$</span><span class="va">Group</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">defac</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html" class="external-link">rowData</a></span><span class="op">(</span><span class="va">data_sim</span><span class="op">)</span><span class="op">[</span>, <span class="va">cols</span><span class="op">]</span><span class="op">)</span></span>
+<span><span class="va">up</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="va">cols</span>, \<span class="op">(</span><span class="va">id</span><span class="op">)</span></span>
 <span><span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">defac</span>, <span class="fu">if_all</span><span class="op">(</span><span class="op">-</span><span class="op">!</span><span class="op">!</span><span class="fu"><a href="https://rlang.r-lib.org/reference/sym.html" class="external-link">sym</a></span><span class="op">(</span><span class="va">id</span><span class="op">)</span>, \<span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">!</span><span class="op">!</span><span class="fu"><a href="https://rlang.r-lib.org/reference/sym.html" class="external-link">sym</a></span><span class="op">(</span><span class="va">id</span><span class="op">)</span> <span class="op">/</span> <span class="va">x</span> <span class="op">&gt;</span> <span class="va">fc</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">rownames</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/row_colnames.html" class="external-link">rownames</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/methods/slot.html" class="external-link">slot</a></span><span class="op">(</span><span class="va">data_sim</span>, <span class="st">"metadata"</span><span class="op">)</span><span class="op">$</span><span class="va">up_markers</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/setNames.html" class="external-link">setNames</a></span><span class="op">(</span><span class="va">up</span>, <span class="va">cols</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/methods/slot.html" class="external-link">slot</a></span><span class="op">(</span><span class="va">data_sim</span>, <span class="st">"metadata"</span><span class="op">)</span><span class="op">$</span><span class="va">up_markers</span></span>
 <span><span class="co">#&gt; $DEFacGroup1</span></span>
@@ -274,7 +277,7 @@ quite fast.</p>
 <span>  <span class="op">)</span></span>
 <span><span class="op">)</span></span>
 <span><span class="co">#&gt;    user  system elapsed </span></span>
-<span><span class="co">#&gt;   0.255   0.004   0.258</span></span>
+<span><span class="co">#&gt;   0.249   0.010   0.257</span></span>
 <span></span>
 <span><span class="co">## score and tf,idf,iae all saved</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html" class="external-link">assays</a></span><span class="op">(</span><span class="va">data_sim</span><span class="op">)</span></span>
@@ -477,7 +480,7 @@ for each component, but separately.</p>
 <span><span class="op">)</span></span></code></pre></div>
 <p><img src="workshop_smartid_files/figure-html/unnamed-chunk-9-1.png" class="r-plt" width="768"><img src="workshop_smartid_files/figure-html/unnamed-chunk-9-2.png" class="r-plt" width="768"><img src="workshop_smartid_files/figure-html/unnamed-chunk-9-3.png" class="r-plt" width="768"><img src="workshop_smartid_files/figure-html/unnamed-chunk-9-4.png" class="r-plt" width="768"></p>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">marker_ls_new</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">marker_ls_new</span><span class="op">)</span>, <span class="st">"new"</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">marker_ls_new</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">marker_ls_new</span><span class="op">)</span>, <span class="st">"new"</span><span class="op">)</span></span></code></pre></div>
 <p>We can compare the marker list with the previous one. The overlap
 result shows 2 methods can achieve almost the same marker list for each
 group.</p>
@@ -515,7 +518,7 @@ need for data pre-processing, which is quite convenient and fast.</p>
 <span>  <span class="op">)</span></span>
 <span><span class="op">)</span></span>
 <span><span class="co">#&gt;    user  system elapsed </span></span>
-<span><span class="co">#&gt;   0.181   0.012   0.193</span></span>
+<span><span class="co">#&gt;   0.180   0.013   0.192</span></span>
 <span></span>
 <span><span class="co">## new score is saved and tf,idf,iae all updated</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html" class="external-link">assays</a></span><span class="op">(</span><span class="va">data_sim</span><span class="op">)</span></span>
@@ -541,7 +544,7 @@ gene-set list.</p>
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="co">## saved score</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html" class="external-link">colData</a></span><span class="op">(</span><span class="va">data_sim</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/row_colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html" class="external-link">colData</a></span><span class="op">(</span><span class="va">data_sim</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] "Cell"                 "Batch"                "Group"               </span></span>
 <span><span class="co">#&gt; [4] "ExpLibSize"           "Group1.score.unlabel" "Group2.score.unlabel"</span></span>
 <span><span class="co">#&gt; [7] "Group3.score.unlabel"</span></span></code></pre></div>
@@ -551,7 +554,7 @@ target group.</p>
 <p>It’s evident that the score can sufficiently separate the target
 group from all others.</p>
 <div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html" class="external-link">colData</a></span><span class="op">(</span><span class="va">data_sim</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html" class="external-link">colData</a></span><span class="op">(</span><span class="va">data_sim</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">tidyr</span><span class="fu">::</span><span class="fu"><a href="https://tidyr.tidyverse.org/reference/pivot_longer.html" class="external-link">pivot_longer</a></span><span class="op">(</span><span class="st">"Group1.score.unlabel"</span><span class="op">:</span><span class="st">"Group3.score.unlabel"</span>,</span>
 <span>    names_to <span class="op">=</span> <span class="st">"group markers"</span>,</span>
 <span>    values_to <span class="op">=</span> <span class="st">"score"</span></span>
@@ -633,7 +636,7 @@ group from all others.</p>
 <span><span class="co">#&gt;  [82] cli_3.6.5                rsvd_1.0.5               textshaping_1.0.4       </span></span>
 <span><span class="co">#&gt;  [85] segmented_2.1-4          S4Arrays_1.11.0          viridisLite_0.4.2       </span></span>
 <span><span class="co">#&gt;  [88] dplyr_1.1.4              gtable_0.3.6             rstatix_0.7.3           </span></span>
-<span><span class="co">#&gt;  [91] sass_0.4.10              digest_0.6.37            SparseArray_1.11.1      </span></span>
+<span><span class="co">#&gt;  [91] sass_0.4.10              digest_0.6.38            SparseArray_1.11.1      </span></span>
 <span><span class="co">#&gt;  [94] ggrepel_0.9.6            htmlwidgets_1.6.4        farver_2.1.2            </span></span>
 <span><span class="co">#&gt;  [97] htmltools_0.5.8.1        pkgdown_2.2.0            lifecycle_1.0.4         </span></span>
 <span><span class="co">#&gt; [100] httr_1.4.7               MASS_7.3-65</span></span></code></pre></div>

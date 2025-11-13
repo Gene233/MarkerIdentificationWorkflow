@@ -2,8 +2,9 @@ pandoc: 3.8.2.1
 pkgdown: 2.2.0
 pkgdown_sha: ~
 articles:
+  workshop_mastR: workshop_mastR.html
   workshop_smartid: workshop_smartid.html
-last_built: 2025-11-11T03:48Z
+last_built: 2025-11-13T10:29Z
 urls:
   reference: https://gene233.github.io/MarkerIdentificationWorkflow/reference
   article: https://gene233.github.io/MarkerIdentificationWorkflow/articles

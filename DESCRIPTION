@@ -44,6 +44,7 @@ Depends:
     R (>= 4.4)
 Imports: 
     Biobase,
+    ComplexHeatmap,
     dplyr,
     ggplot2,
     graphics,

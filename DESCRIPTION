@@ -71,7 +71,6 @@ Suggests:
     testthat (>= 3.0.0),
     tidytext,
     UpSetR,
-    BisqueRNA,
     clusterProfiler,
     ComplexHeatmap,
     depmap,

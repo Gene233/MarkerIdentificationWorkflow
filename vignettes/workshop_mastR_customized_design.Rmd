@@ -214,13 +214,13 @@ Users can use the `glimmaMDS()`, `glimmaMA()`, and `glimmaVolcano()` functions f
 
 ```{r visualization}
 ## MDS plot
-glimmaMDS(proc_data)
+Glimma::glimmaMDS(proc_data)
 
 ## MA plot
-glimmaMA(proc_data$tfit, dge = proc_data)
+Glimma::glimmaMA(proc_data$tfit, dge = proc_data)
 
 ## volcano plot
-glimmaVolcano(proc_data$tfit, dge = proc_data)
+Glimma::glimmaVolcano(proc_data$tfit, dge = proc_data)
 
 ```
 

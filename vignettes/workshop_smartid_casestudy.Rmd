@@ -65,7 +65,7 @@ library(SummarizedExperiment)
 library(ggplot2)
 library(scater)
 
-sce <- readRDS("data/pbmc3k.final.rds")
+sce <- readRDS("../data/pbmc3k.final.rds")
 sce
 
 table(sce$seurat_annotations)

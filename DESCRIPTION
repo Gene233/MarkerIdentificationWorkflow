@@ -21,7 +21,7 @@ Authors@R:
 Description: TThis workflow package shows how to use mastR and smartid to identify markers from transcriptomic data. 
 License: MIT + file LICENSE
 Encoding: UTF-8
-LazyData: true
+LazyData: True
 Workflow: True
 VignetteBuilder: knitr
 biocViews: Software, GeneExpression, Transcriptomics

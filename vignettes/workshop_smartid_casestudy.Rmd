@@ -65,9 +65,11 @@ library(SummarizedExperiment)
 library(ggplot2)
 library(scater)
 
-data(pbmc3k.final)
-sce <- pbmc3k.final
-sce
+# Load pre-processed data from package
+sce <- readRDS(
+  system.file("extdata", "pbmc3k.final.rda", 
+              package = "MarkerIdentificationWorkflow")
+)
 
 table(sce$seurat_annotations)
 ```

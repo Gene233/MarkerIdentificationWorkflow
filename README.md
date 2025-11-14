@@ -2,14 +2,22 @@
 
 ## Overview
 
-This workshop will focus on performing marker identification analysis of transcriptomic data and visualising the results. We will identify markers on single-cell RNA-seq data using methods in the `smartid` package to explore feature importance in class and individual samples. Following this, we will perform gene-set scoring using tools from the `smartid` package. Overall, we will demonstrate a TF-IDF-based approach to process the data, identify the markers, visualise and interpret resutls using `smartid` package.
+This workshop will focus on performing marker identification analysis of transcriptomic data and visualising the results using `mastR` and `smartid` packages. We will identify markers on bulk RNA-seq data with `mastR` and single-cell RNA-seq data with `smartid` to explore feature importance in class and individual samples. Following this, we will perform gene-set scoring using tools from the `smartid` package. Overall, we will demonstrate a streamlined marker identification workflow for bulk data using `mastR` and a TF-IDF-based approach to process the scRNA-seq data, identify the markers, visualise and interpret resutls using `smartid` package.
 
 The workshop will be organised into two broad sections:
-* Calculate score for each feature in each sample
-* Scale and transform scores in regard of class
-* Identify markers for each class based on GMM
+* Identify markers on bulk RNA-seq data using `mastR`
+    * Build markers pool from multiple sources
+    * Perform differential expression analysis
+    * Select signature from the pool
+    * Refine signature by background expression
+    * Visualize signature performance
+* Identify markers on single-cell RNA-seq data using `smartid`
+    * Calculate score for each feature in each sample
+    * Scale and transform scores in regard of class
+    * Identify markers for each class based on GMM
+    * Perform gene-set scoring for validation
 
-Detailed material can be found [here](https://gene233.github.io/MarkerIdentificationWorkflow/articles/workshop_smartid.html).
+Detailed material can be found [here](https://gene233.github.io/MarkerIdentificationWorkflow/articles/workshop_mastR_step_by_step.html) and [here](https://gene233.github.io/MarkerIdentificationWorkflow/articles/workshop_smartid.html).
 
 ## Pre-requisites 
 
@@ -21,33 +29,35 @@ If you are not familiar with the R statistical programming language it is compul
 
 The following key R packages will be used: 
 
+* `mastR`
 * `smartid`
 * `mclust`
-* `mastR`
+* `edgeR`
+* `limma`
 
 ## Time outline
 
-| Activity                                                        | Time |
-|-----------------------------------------------------------------|------|
-| Introduction & setup                                            | 15m  |
-| Part 1. Calculate score for each feature in each sample         | 20m  |
-| Part 2. Scale and transform scores in regard of class           | 20m  |
-| Part 3. Identify markers for each class based on GMM            | 20m  |
-| Q & A                                                           | 15m  |
+| Activity                                                              | Time |
+|-----------------------------------------------------------------------|------|
+| Introduction & setup                                                  | 10m  |
+| Part 1. Identify markers on bulk RNA-seq data using `mastR`           | 35m  |
+| Part 2. Identify markers on single-cell RNA-seq data using `smartid`  | 35m  |
+| Q & A                                                                 | 10m  |
 
 
 ## Workshop goals and objectives
 
 ### Learning goals
 
- - Learn how to perform marker identification on scRNA-seq data in R.
- - Understand the challenges caused by rare population within scRNA-seq data.
- - Understand the importance of marker findings.
+ - Understand the importance of marker identification in transcriptomic data analysis.
+ - Learn how to perform marker identification on bulk and scRNA-seq data in R.
+ - Understand the challenges caused by background/ambient expression within bulk data and rare population within scRNA-seq data.
 
 ### Learning objectives
 
  - Perform a marker identification analysis and interpret the results.
- - Apply smartid to identify highly-specific markers for rare populations and to validate the results using scoring method in `smartid`.
+ - Apply `mastR` to remove the confounding effects of background expression from the identification markers.
+ - Apply `smartid` to identify highly-specific markers for rare populations and to validate the results using scoring method in `smartid`.
 
 ## Workshop package installation 
 

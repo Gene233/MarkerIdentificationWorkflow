@@ -1,0 +1,108 @@
+.glimmaMDS_plotContainer {
+	display: inline-grid;
+	grid-column-gap: 2rem;
+}
+
+.glimmaMDS_mdsContainer {
+	grid-column-start: 1;
+	grid-column-end: 2;
+}
+
+.glimmaMDS_eigenContainer {
+	grid-column-start: 2;
+	grid-column-end: 3;
+}
+
+.glimmaMDS_saveContainer {
+	margin-top: 10px;
+	margin-left: 15px;
+}
+
+.glimmaMDS_controlContainer {
+	padding: 10px;
+	display: grid;
+	grid-template-columns: repeat(7, 1fr);
+	font-family: sans-serif;
+	color: #353535;
+	font-size: 9px;
+}
+
+.glimmaMDS_saveButton {
+    padding: 3px;
+    border: 1px solid #e7e7e7;
+    border-radius: 3px;
+    cursor: pointer;
+    background-color: #e7e7e7;
+    transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+    outline: none;
+}
+
+.glimmaMDS_saveButton:hover 
+{
+    background-color: #aaaaaa;
+    color: white;
+    border-color: #aaaaaa;
+}
+
+.glimmaMDS_saveButton:active {
+    color: rgba(255, 255, 255, 1);
+    box-shadow: 0px 0px 5px rgb(31 31 31 / 40%);
+}
+
+.glimmaMDS_dimmedBox {
+    display: none;
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100vw;
+	height: 100vh;
+	background-color: rgba(0, 0, 0, 0.5);
+	z-index: 3;
+}
+
+.glimmaMDS_saveModal {
+	display: none;
+	position: fixed;
+	top: 50%;
+	left: 50%;
+	background-color: #f1f1f1;
+	min-width: 160px;
+	box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+	z-index: 3;
+	border-radius: 4px;
+	text-align: left;
+}
+
+.glimmaMDS_saveModal a {
+    position: relative;
+	padding: 12px 16px;
+	text-decoration: none;
+	display: block;
+    font-size: 11px;
+    color: #383838;
+	font-family: sans-serif;
+	border-radius: 4px;
+}
+
+.glimmaMDS_saveModal a:hover {
+	background-color: #ddd
+}
+
+.glimmaMDS_warningBox 
+{
+	display: none;
+	text-align: center;
+	font-family: sans-serif;
+	padding: 2px;
+	margin: 10px;
+	font-size: 10pt;
+	color: #721c24;
+	background-color: #f8d7da;
+	border: 1px solid #f5c6cb;
+	border-radius: .25rem;
+}
+
+
+.glimmaMDS_show {
+	display: block;
+}

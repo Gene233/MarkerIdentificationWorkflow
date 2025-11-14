@@ -1,0 +1,163 @@
+.glimmaXY_plotContainer {
+	display: inline-grid;
+	grid-column-gap: 2rem;
+}
+
+.glimmaXY_xyContainerSingle {
+	grid-column-start: 1;
+	grid-column-end: 3;
+}
+
+.glimmaXY_xyContainer {
+	grid-column-start: 1;
+	grid-column-end: 2;
+}
+
+.glimmaXY_expressionContainer {
+	grid-column-start: 2;
+	grid-column-end: 3;
+}
+
+/* contains everything that is not a plot */
+
+.glimmaXY_controlContainer {
+	padding: 10px;
+	display: block;
+	font-family: sans-serif;
+	color: #353535;
+	font-size: 9pt;
+}
+
+/* Datatables button container styling */
+.glimmaXY_buttonContainer {
+	display: inline-block;
+	margin-right: 5px;
+	margin-bottom: 10px;
+}
+
+.glimmaXY_save-button {
+    box-sizing: border-box;
+	padding: 0.3em 0.5em;
+    font-size: 9pt;
+    border: 1px solid #e0e0e0;
+    border-radius: 3px;
+    cursor: pointer;
+    color: #505050;
+    white-space: nowrap;
+    overflow: hidden;
+    background-color: #ffffff;
+    background-image: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+    user-select: none;
+    text-decoration: none;
+    outline: none;
+    text-overflow: ellipsis;
+}
+
+.glimmaXY_save-button:hover 
+{
+    background-color: #aaaaaa;
+    color: white;
+    border-color: #aaaaaa;
+}
+
+.glimmaXY_save-button:active {
+    color: rgba(255, 255, 255, 1);
+    box-shadow: 0px 0px 5px rgb(31 31 31 / 40%);
+}
+
+/* The container <div> - needed to position the dropdown content */
+
+.glimmaXY_dropdown {
+	position: relative;
+	display: inline-block;
+}
+
+/* Dropdown Content (Hidden by Default) */
+
+.glimmaXY_dropdown-content {
+	display: none;
+	position: absolute;
+	background-color: #f1f1f1;
+	min-width: 160px;
+	box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+	z-index: 3;
+	border-radius: 4px;
+}
+
+/* Links inside the dropdown */
+
+.glimmaXY_dropdown-content a {
+	padding: 12px 16px;
+	text-decoration: none;
+	display: block;
+    font-size: 11px;
+    color: #383838;
+	font-family: sans-serif;
+	border-radius: 4px;
+}
+
+/* Change color of dropdown links on hover */
+
+.glimmaXY_dropdown-content a:hover {
+	background-color: #ddd
+}
+
+/* Show the dropdown menu (use JS to add this class to the .dropdown-content container when the user clicks on the dropdown button) */
+
+.glimmaXY_alertBox 
+{
+	display: none;
+	text-align: center;
+	font-family: sans-serif;
+	padding: 2px;
+	margin: 10px;
+	font-size: 10pt;
+	color: #721c24;
+	background-color: #f8d7da;
+	border: 1px solid #f5c6cb;
+	border-radius: .25rem;
+}
+
+.glimmaXY_show {
+	display: block;
+}
+
+.glimmaXY_max_extent_input, 
+.glimmaXY_min_extent_input
+{
+	width: 90%;
+	border: 1px solid #b5b5b5;
+	border-radius: 4px;
+	font-size: 9pt;
+	font-family: sans-serif;
+	display: block;
+}
+
+.glimmaXY_expressionControls {
+	display: grid;
+	grid-template-columns: 1fr 1fr 1fr 1fr;
+}
+
+.glimmaXY_contrast_input {
+	padding: 0.3em 0.5em;
+	border: 1px solid #e0e0e0;
+	border-radius: 3px;
+	font-size: 9pt;
+	font-family: sans-serif;
+	color: #505050;
+}
+
+/* due to a bug in Vega we can't give a class to the jitter
+   input - I think b/c it's a range input - and so we have to
+   style it manually */
+input[name="jitter"] {
+	width: 95%;
+}
+
+input[name="jitter"] + label {
+	display: none;
+}

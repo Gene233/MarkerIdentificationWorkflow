@@ -1,0 +1,50 @@
+/* CUSTOM GLIMMA CSS FOR DATATABLES */
+
+th { font-size: 8pt; }
+td { font-size: 8pt; }
+
+table.dataTable tbody tr.glimmaXY_stripe1 {
+  background-color: #ffffff;
+}
+table.dataTable tbody tr.glimmaXY_stripe1:hover {
+  background-color: #ebf0fa;
+}
+table.dataTable tbody tr.glimmaXY_stripe1.glimmaXY_selected {
+  background-color: #e4ecff;
+}
+table.dataTable tbody tr.glimmaXY_stripe2 {
+  background-color: #f6f6f6;
+  border-bottom: solid #c0c0c0;
+}
+table.dataTable tbody tr.glimmaXY_stripe2:hover {
+  background-color: #ebf0fa;
+}
+table.dataTable tbody tr.glimmaXY_stripe2.glimmaXY_selected {
+  background-color: #e4ecff;
+  border-bottom: solid #c0c0c0;
+}
+
+/* search filter */
+label 
+{ 
+  font-size: 9pt;
+  color: #4c4c4c;
+  font-family: sans-serif;
+}
+
+/* search input border */
+.dataTables_wrapper .dataTables_filter input {
+  border: solid 1px #d8d8d8;
+  border-radius: 4px;
+  height: 23px;
+}
+
+table.dataTable,
+table.dataTable th,
+table.dataTable td {
+  border: none;
+}
+
+table.dataTable thead {
+  background-color: transparent;
+}

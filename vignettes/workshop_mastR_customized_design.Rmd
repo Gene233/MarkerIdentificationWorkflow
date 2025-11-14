@@ -122,9 +122,9 @@ Users can create the customized contrast matrix manually by specifying the contr
 ```{r customized contrast matrix}
 ## DE of NK vs B and B vs T
 con_mat <- makeContrasts(
-  'NK-B' = 'NK - B',
-  'B-T' = 'B - T',
-  levels = levels(im_data_6$`celltype:ch1`)
+  'NK-CD4' = 'NK - CD4',
+  'NK-T' = 'NK - (CD4 + CD8)/2',
+  levels = levels(factor(make.names(im_data_6$`celltype:ch1`)))
 )
 con_mat
 ```
@@ -146,7 +146,8 @@ proc_data <- mastR::process_data(
   gene_id = "ENSEMBL" ## rownames of im_data_6 is ENSEMBL ID
 )
 con_mat2 <- makeContrasts(
-  'NK-B' = 'NK - B',
+  'NK-CD4' = 'NK - CD4',
+  'NK-T' = 'NK - (CD4 + CD8)/2',
   levels = proc_data$vfit$design
 )
 con_mat2

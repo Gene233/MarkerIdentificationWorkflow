@@ -65,6 +65,7 @@ library(SummarizedExperiment)
 library(ggplot2)
 library(scater)
 
+setwd("~/vignettes")
 sce <- readRDS("../data/pbmc3k.final.rda")
 sce
 

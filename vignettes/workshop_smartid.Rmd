@@ -322,6 +322,8 @@ as.data.frame(colData(data_sim)) |>
 
 # SessionInfo
 
+------------------------------------------------------------------------
+
 ```{r}
 sessionInfo()
 ```

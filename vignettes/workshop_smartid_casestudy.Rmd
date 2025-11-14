@@ -1,0 +1,242 @@
+---
+title: "smartid: Identify markers for rare populations in single-cell RNA-seq data using TF-IDF-based approach and EM algorithm"
+author:
+  - name: Jinjin Chen
+    affiliation:
+      - Bioinformatics Division, Walter and Eliza Hall Institute of Medical Research, Parkville, VIC 3052, Australia
+      - Department of Medical Biology, University of Melbourne, Parkville, VIC 3010, Australia
+    email: chen.j@wehi.edu.au
+date: "`r format(Sys.time(), '%d %b %Y')`"
+output: 
+  BiocStyle::html_document:
+    toc: true
+    number_sections: true
+vignette: >
+  %\VignetteIndexEntry{smartid: Scoring and MARker selection method based on modified Tf-IDf}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.width = 8,
+  fig.height = 5
+)
+```
+
+# Introduction
+
+------------------------------------------------------------------------
+
+**smartid**
+
+`smartid` is a package that enables automated selection of class specific signature genes, especially for rare population. This package is developed for generating lists of specific signature genes based on **Term Frequency-Inverse Document Frequency** (TF-IDF)  modified methods and **expectation maximization** (EM) for labeled data. It can also be used as a new gene-set scoring method or data transformation method for un-labeled data. Multiple visualization functions are implemented in this package.
+
+# Installation
+
+------------------------------------------------------------------------
+
+`smartid` R package can be installed from Bioconductor or [GitHub](https://github.com/DavisLaboratory/smartid).
+
+The most updated version of `smartid` is hosted on GitHub and can be installed using `devtools::install_github()` function provided by [devtools](https://cran.r-project.org/package=devtools).
+
+```{r installation, eval=FALSE}
+if (!requireNamespace("BiocManager", quietly = TRUE)) {
+  install.packages("BiocManager")
+}
+if (!requireNamespace("smartid", quietly = TRUE)) {
+  BiocManager::install("smartid")
+}
+```
+
+# Load Example Data
+
+------------------------------------------------------------------------
+
+To demonstrate the usage of `smartid`, we will use the `pbmc3k.final` data processed by `Seurat` from [10X Genomics](https://www.10xgenomics.com/resources/datasets/pbmc-3k-1-standard-1-0-0) as an example. This data is a single-cell RNA-seq data of 2,638 PBMCs from a healthy donor, consisting of 9 cell types.
+
+The data is a `SingleCellExperiment` object, containing the raw counts and `Seurat` processed log-transformed counts of the scRNA-seq data.
+
+```{r load data}
+library(smartid)
+library(SummarizedExperiment)
+library(ggplot2)
+library(scater)
+
+sce <- readRDS("data/pbmc3k.final.rds")
+sce
+
+table(sce$seurat_annotations)
+```
+
+# Identify Markers
+
+------------------------------------------------------------------------
+
+## Score Samples
+
+To identify markers, we will use the `cal_score()` function to calculate the score for each feature in each sample. The score can be composed of 3 terms: TF (term/feature frequency), IDF (inverse document/cell frequency) and IAE (inverse average expression of features). Each term has a couple of available choices with different formats to suit labeled or un-labeled data.
+
+*Note: `smartid` provides a flexible framework to calculate the score, with different TF, IDF and IAE methods available.*
+*Users can use function `idf_iae_methods()` to see available methods for IDF/IAE term. More details of each term can be seen in help page of each function, e.g. `?idf`.*
+
+```{r}
+## show available methods
+idf_iae_methods()
+```
+
+*Here we use the default methods for demonstration: `logtf` for TF, `prob` for IDF and IAE.*
+
+An advantage of `smartid` is that it can start with raw counts data, with no need for pre-processed data. And the scoring is quite fast.
+
+```{r score samples}
+# factor the cell types
+sce$Group <- factor(as.character(sce$seurat_annotations))
+
+## score
+sce <- cal_score(
+  sce,
+  tf = "logtf",
+  idf = "prob",
+  iae = "prob",
+  par.idf = list(label = "Group"),
+  par.iae = list(label = "Group")
+)
+
+## score and tf,idf,iae all saved
+assays(sce)
+names(metadata(sce))
+```
+
+## Scale and Transform Score
+
+Scaling is then needed to find the markers specific to the group/class, however, standard scaling might fail due to the rare populations. Here `smartid` uses a special scaling strategy `scale_mgm()`, which can scale imbalanced data by given group/class labels.
+
+By doing this, we can avoid the bias towards features with larger numerical ranges during feature selection.
+
+The scale method is depicted as below:
+
+$$z=\frac{x-\frac{\sum_k^{n_D}(\mu_k)}{n_D}}{sd_{pooled}}$$
+
+The mean of the scaled score $z_{i,j,k}$ for gene $i$ across all cells in class $k$ was estimated as $\bar{z}_{i,k}$, then the importance $(I_{i,k})$ of it was obtained by calculating the differences between the $\{\bar{z}_{i,k}\}$. For each class, the original importances $\{I_{i,k}\}$ of all genes were transformed using a softmax transformation function $g(\cdot)$ to produce the transformed importances $\{SI_{i,k}}\$.
+
+This normalized exponential transformation constrained the importance within the range [0,1] and summed to 1.
+
+```{r scale and transform score}
+## scale and transform score
+top_m <- top_markers(
+  data = sce,
+  label = "Group",
+  n = Inf # set Inf to get all features processed score
+)
+top_m
+```
+
+The top n features for each group will be ordered and listed in `top_m`. `smartid` provides easy-to-use functions to visualize top feature scores in each group.
+
+```{r, fig.width=15, fig.height=12}
+score_barplot(
+  top_markers = top_m,
+  column = ".dot",
+  n = 500
+) + 
+  theme(axis.text.y = element_blank()) +
+  scale_fill_manual(na.value = "grey")
+```
+
+## Select Markers
+
+We can see that there is a clear change point within the top 500 features for each cell type, indicating the potential markers cutoff for each cell type.
+
+To automate the selection of markers, we can use the `markers_mclust()` function to select the markers for each cell type.
+
+The importance for each cell type will be modelled as a mixture of Gaussian distributions (GMM). The component with highest $\mu_k$ will be considered as the density function of the marker genes, and the genes with probability over the threshold (0.99 by default) will be selected as final marker genes for that cell type.
+
+smartid also allows to plot the mixture distribution plot after EM to visualize the markers selection, which will slightly increase the running time.
+
+```{r select markers}
+## select markers
+set.seed(123)
+m_ls_smartid <- markers_mclust(
+  top_markers = top_m,
+  column = ".dot",
+  method = "max.one",
+  plot = TRUE # set FALSE to not plot the mixture distribution plot
+)
+
+lengths(m_ls_smartid)
+```
+
+We can then visualize how well the markers are separated from the rest of the features for each cell type.
+
+```{r}
+score_barplot(
+  top_markers = top_m,
+  column = ".dot",
+  f_list = m_ls_smartid,
+  n = 500
+)
+```
+
+## Gene-set Scoring
+
+To validate the selected markers for the target cell type, we can easily use the `ova_score_boxplot()` function in `smartid` to visualize the overallscore of the marker list across cell types.
+
+```{r}
+## visualize score for cell type 1 across cell types
+ova_score_boxplot(
+    sce@assays@data$score,
+    features = m_ls_smartid[[1]],
+    ref.group = names(m_ls_smartid)[1],
+    label = sce$Group
+  ) +
+    ggtitle(sprintf("smartid-identified markers for %s", names(m_ls_smartid)[1]))
+```
+
+We can see that the score for the target cell type is significantly higher than the others, indicating the markers are indeed specific to the target cell type.
+
+`smartid` also provides a simple way to calculate the overall score for cell type marker lists.
+
+By using the `gs_score()` function in `smartid`, we can calculate the overall score for each cell type marker list in one single step.
+
+The score for each cell and each cell type marker list will be saved in the colData of the `SingleCellExperiment` object for easy access, with the suffix of 'score' following the cell type name.
+
+```{r}
+## score gene-set
+sce <- gs_score(
+  data = sce,
+  features = m_ls_smartid,
+  slot = "score",
+  suffix = "score"
+)
+
+## saved score
+colnames(colData(sce))
+```
+
+We can then visualize all the scores across all cell types, see how well it can distinguish the target cell type from all others.
+
+It's evident that the score can sufficiently separate the target cell type from all others.
+
+```{r}
+## visualize score across cell types
+as.data.frame(colData(sce)) |>
+  tidyr::pivot_longer("Naive.CD4.T.score":"Platelet.score",
+    names_to = "group markers",
+    values_to = "score"
+  ) |>
+  ggplot(aes(x = Group, y = score, fill = Group)) +
+  geom_boxplot() +
+  facet_wrap(~`group markers`, scales = "free") +
+  theme_bw()
+```
+
+# SessionInfo
+
+------------------------------------------------------------------------
+
+```{r}
+sessionInfo()
+```

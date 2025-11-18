@@ -205,11 +205,11 @@ As we can notice, there are some warnings about the missing Features in the scor
 To avoid this, we can either convert the feature names of the `SingleCellExperiment` object to valid R variable names, or convert the feature names of the marker list back to the original feature names before scoring.
 
 ```{r}
-## convert feature names back to original feature names
-m_ls_smartid <- lapply(m_ls_smartid, function(x) sub("\\.", "-", x))
+# ## convert feature names back to original feature names
+# m_ls_smartid <- lapply(m_ls_smartid, function(x) sub("\\.", "-", x))
 
-# ## convert feature names of the score matrix to valid R variable names
-# colnames(sce@assays@data$score) <- make.names(colnames(sce@assays@data$score))
+## convert feature names of the score matrix to valid R variable names
+rownames(sce@assays@data$score) <- make.names(rownames(sce@assays@data$score))
 
 ## visualize score for cell type 1 across cell types
 ova_score_boxplot(
@@ -255,7 +255,7 @@ as.data.frame(colData(sce)) |>
   ) |>
   ggplot(aes(x = Group, y = score, fill = Group)) +
   geom_boxplot() +
-  facet_wrap(~`group markers`, scales = "free_x") +
+  facet_wrap(~`group markers`, scales = "free_y") +
   theme_bw() +
   theme(axis.text.x = element_text(angle = 45, hjust = 1))
 ```

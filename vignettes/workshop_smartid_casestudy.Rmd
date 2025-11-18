@@ -143,9 +143,10 @@ The top n features for each group will be ordered and listed in `top_m`. `smarti
 score_barplot(
   top_markers = top_m,
   column = ".dot",
-  n = 500
+  n = 300
 ) + 
-  theme(axis.text.y = element_blank())
+  theme(axis.text.y = element_blank()) +
+  scale_fill_manual(na.value = "grey")
 ```
 
 ## Select Markers
@@ -158,7 +159,7 @@ The importance for each cell type will be modelled as a mixture of Gaussian dist
 
 smartid also allows to plot the mixture distribution plot after EM to visualize the markers selection, which will slightly increase the running time.
 
-```{r select markers}
+```{r select markers, fig.width=20, fig.height=8}
 ## select markers
 set.seed(123)
 m_ls_smartid <- markers_mclust(
@@ -173,13 +174,14 @@ lengths(m_ls_smartid)
 
 We can then visualize how well the markers are separated from the rest of the features for each cell type.
 
-```{r}
+```{r, fig.width=15, fig.height=12}
 score_barplot(
   top_markers = top_m,
   column = ".dot",
   f_list = m_ls_smartid,
-  n = 500
-)
+  n = 300
+) + 
+  theme(axis.text.y = element_blank())
 ```
 
 ## Gene-set Scoring
@@ -198,6 +200,29 @@ ova_score_boxplot(
 ```
 
 We can see that the score for the target cell type is significantly higher than the others, indicating the markers are indeed specific to the target cell type.
+
+As we can notice, there are some warnings about the missing Features in the score calculation. This is because smartid will convert the feature names to valid R variable names, which will replace the `-` with `.` in the feature names. Thus, the feature names in the score matrix are not exactly the same as the feature names in the `SingleCellExperiment` object.
+
+To avoid this, we can either convert the feature names of the `SingleCellExperiment` object to valid R variable names, or convert the feature names of the marker list back to the original feature names before scoring.
+
+```{r}
+## convert feature names back to original feature names
+m_ls_smartid <- lapply(m_ls_smartid, function(x) sub("\\.", "-", x))
+
+# ## convert feature names of the score matrix to valid R variable names
+# colnames(sce@assays@data$score) <- make.names(colnames(sce@assays@data$score))
+
+## visualize score for cell type 1 across cell types
+ova_score_boxplot(
+    sce@assays@data$score,
+    features = m_ls_smartid[[1]],
+    ref.group = names(m_ls_smartid)[1],
+    label = sce$Group
+  ) +
+    ggtitle(sprintf("smartid-identified markers for %s", names(m_ls_smartid)[1]))
+```
+
+Now we can see no more warnings about the missing Features this time.
 
 `smartid` also provides a simple way to calculate the overall score for cell type marker lists.
 
@@ -222,17 +247,18 @@ We can then visualize all the scores across all cell types, see how well it can 
 
 It's evident that the score can sufficiently separate the target cell type from all others.
 
-```{r}
+```{r, fig.width=10, fig.height=10}
 ## visualize score across cell types
 as.data.frame(colData(sce)) |>
-  tidyr::pivot_longer("Naive.CD4.T.score":"Platelet.score",
+  tidyr::pivot_longer("B.score":"Platelet.score",
     names_to = "group markers",
     values_to = "score"
   ) |>
   ggplot(aes(x = Group, y = score, fill = Group)) +
   geom_boxplot() +
-  facet_wrap(~`group markers`, scales = "free") +
-  theme_bw()
+  facet_wrap(~`group markers`, scales = "free_x") +
+  theme_bw() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
 ```
 
 # SessionInfo

@@ -145,8 +145,7 @@ score_barplot(
   column = ".dot",
   n = 300
 ) + 
-  theme(axis.text.y = element_blank()) +
-  scale_fill_manual(na.value = "grey")
+  theme(axis.text.y = element_blank())
 ```
 
 ## Select Markers

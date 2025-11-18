@@ -449,11 +449,11 @@ feature names in the <code>SingleCellExperiment</code> object.</p>
 convert the feature names of the marker list back to the original
 feature names before scoring.</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co">## convert feature names back to original feature names</span></span>
-<span><span class="va">m_ls_smartid</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="va">m_ls_smartid</span>, <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">sub</a></span><span class="op">(</span><span class="st">"\\."</span>, <span class="st">"-"</span>, <span class="va">x</span><span class="op">)</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="co"># ## convert feature names back to original feature names</span></span>
+<span><span class="co"># m_ls_smartid &lt;- lapply(m_ls_smartid, function(x) sub("\\.", "-", x))</span></span>
 <span></span>
-<span><span class="co"># ## convert feature names of the score matrix to valid R variable names</span></span>
-<span><span class="co"># colnames(sce@assays@data$score) &lt;- make.names(colnames(sce@assays@data$score))</span></span>
+<span><span class="co">## convert feature names of the score matrix to valid R variable names</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/row_colnames.html" class="external-link">rownames</a></span><span class="op">(</span><span class="va">sce</span><span class="op">@</span><span class="va">assays</span><span class="op">@</span><span class="va">data</span><span class="op">$</span><span class="va">score</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/make.names.html" class="external-link">make.names</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/row_colnames.html" class="external-link">rownames</a></span><span class="op">(</span><span class="va">sce</span><span class="op">@</span><span class="va">assays</span><span class="op">@</span><span class="va">data</span><span class="op">$</span><span class="va">score</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co">## visualize score for cell type 1 across cell types</span></span>
 <span><span class="fu"><a href="https://davislaboratory.github.io/smartid/reference/ova_score_boxplot.html" class="external-link">ova_score_boxplot</a></span><span class="op">(</span></span>
@@ -462,8 +462,7 @@ feature names before scoring.</p>
 <span>    ref.group <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">m_ls_smartid</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>,</span>
 <span>    label <span class="op">=</span> <span class="va">sce</span><span class="op">$</span><span class="va">Group</span></span>
 <span>  <span class="op">)</span> <span class="op">+</span></span>
-<span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">ggtitle</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sprintf.html" class="external-link">sprintf</a></span><span class="op">(</span><span class="st">"smartid-identified markers for %s"</span>, <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">m_ls_smartid</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Warning in gs_score_init(data, features = features): Feature AC079767-4 is not in score!</span></span></code></pre></div>
+<span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">ggtitle</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sprintf.html" class="external-link">sprintf</a></span><span class="op">(</span><span class="st">"smartid-identified markers for %s"</span>, <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">m_ls_smartid</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p><img src="workshop_smartid_casestudy_files/figure-html/unnamed-chunk-6-1.png" class="r-plt" width="768"></p>
 <p>Now we can see no more warnings about the missing Features this
 time.</p>
@@ -483,15 +482,70 @@ access, with the suffix of ‘score’ following the cell type name.</p>
 <span>  slot <span class="op">=</span> <span class="st">"score"</span>,</span>
 <span>  suffix <span class="op">=</span> <span class="st">"score"</span></span>
 <span><span class="op">)</span></span>
-<span><span class="co">#&gt; Warning in gs_score_init(score = data, features = features): Feature AC079767-4 is not in score!</span></span>
-<span><span class="co">#&gt; Warning in gs_score_init(score = data, features = features): Feature AC092580-4 is not in score!</span></span>
-<span><span class="co">#&gt; Feature AC006369-2 is not in score!</span></span>
-<span><span class="co">#&gt; Feature AC062029-1 is not in score!</span></span>
-<span><span class="co">#&gt; Feature AC104820-2 is not in score!</span></span>
-<span><span class="co">#&gt; Feature AC093388-3 is not in score!</span></span>
-<span><span class="co">#&gt; Warning in gs_score_init(score = data, features = features): Feature NDUFA7-1 is not in score!</span></span>
-<span><span class="co">#&gt; Warning in gs_score_init(score = data, features = features): Feature AP001189-4 is not in score!</span></span>
-<span><span class="co">#&gt; Feature AC147651-3 is not in score!</span></span>
+<span><span class="co">#&gt; Warning in gs_score_init(score = data, features = features): Feature HLA.DOB is not in score!</span></span>
+<span><span class="co">#&gt; Feature RP11.693J15.5 is not in score!</span></span>
+<span><span class="co">#&gt; Feature RP5.887A10.1 is not in score!</span></span>
+<span><span class="co">#&gt; Feature RP1.313I6.12 is not in score!</span></span>
+<span><span class="co">#&gt; Feature CTC.228N24.3 is not in score!</span></span>
+<span><span class="co">#&gt; Feature RP11.164H13.1 is not in score!</span></span>
+<span><span class="co">#&gt; Feature RP13.188A5.1 is not in score!</span></span>
+<span><span class="co">#&gt; Feature RP11.16E12.2 is not in score!</span></span>
+<span><span class="co">#&gt; Feature CTA.250D10.23 is not in score!</span></span>
+<span><span class="co">#&gt; Feature RP11.428G5.5 is not in score!</span></span>
+<span><span class="co">#&gt; Feature RP11.727F15.9 is not in score!</span></span>
+<span><span class="co">#&gt; Feature RP11.452F19.3 is not in score!</span></span>
+<span><span class="co">#&gt; Feature RP11.325F22.2 is not in score!</span></span>
+<span><span class="co">#&gt; Feature RP11.861A13.4 is not in score!</span></span>
+<span><span class="co">#&gt; Feature TAPT1.AS1 is not in score!</span></span>
+<span><span class="co">#&gt; Warning in gs_score_init(score = data, features = features): Feature RP11.295G20.2 is not in score!</span></span>
+<span><span class="co">#&gt; Warning in gs_score_init(score = data, features = features): Feature RP11.539L10.2 is not in score!</span></span>
+<span><span class="co">#&gt; Feature RP11.222K16.2 is not in score!</span></span>
+<span><span class="co">#&gt; Feature TPT1.AS1 is not in score!</span></span>
+<span><span class="co">#&gt; Feature A2M.AS1 is not in score!</span></span>
+<span><span class="co">#&gt; Feature LL22NC03.75H12.2 is not in score!</span></span>
+<span><span class="co">#&gt; Feature RP11.403I13.8 is not in score!</span></span>
+<span><span class="co">#&gt; Feature RP11.383H13.1 is not in score!</span></span>
+<span><span class="co">#&gt; Feature RP11.285F7.2 is not in score!</span></span>
+<span><span class="co">#&gt; Feature RP11.305L7.1 is not in score!</span></span>
+<span><span class="co">#&gt; Feature USP30.AS1 is not in score!</span></span>
+<span><span class="co">#&gt; Feature RP11.445H22.3 is not in score!</span></span>
+<span><span class="co">#&gt; Warning in gs_score_init(score = data, features = features): Feature HLA.DRB5 is not in score!</span></span>
+<span><span class="co">#&gt; Feature HLA.DRB1 is not in score!</span></span>
+<span><span class="co">#&gt; Feature HLA.DPB1 is not in score!</span></span>
+<span><span class="co">#&gt; Feature HLA.DPA1 is not in score!</span></span>
+<span><span class="co">#&gt; Feature HLA.DMA is not in score!</span></span>
+<span><span class="co">#&gt; Feature HLA.DQA2 is not in score!</span></span>
+<span><span class="co">#&gt; Feature HLA.DQA1 is not in score!</span></span>
+<span><span class="co">#&gt; Feature HLA.DQB1 is not in score!</span></span>
+<span><span class="co">#&gt; Feature HLA.DMB is not in score!</span></span>
+<span><span class="co">#&gt; Feature HLA.DQB2 is not in score!</span></span>
+<span><span class="co">#&gt; Feature HLA.DRA is not in score!</span></span>
+<span><span class="co">#&gt; Feature NME1.NME2 is not in score!</span></span>
+<span><span class="co">#&gt; Feature RP1.241P17.4 is not in score!</span></span>
+<span><span class="co">#&gt; Feature HLA.DOA is not in score!</span></span>
+<span><span class="co">#&gt; Feature CTA.29F11.1 is not in score!</span></span>
+<span><span class="co">#&gt; Feature RP11.1143G9.4 is not in score!</span></span>
+<span><span class="co">#&gt; Feature MT.ND5 is not in score!</span></span>
+<span><span class="co">#&gt; Warning in gs_score_init(score = data, features = features): Feature RP11.290F20.3 is not in score!</span></span>
+<span><span class="co">#&gt; Feature RP11.347P5.1 is not in score!</span></span>
+<span><span class="co">#&gt; Feature RP11.362F19.1 is not in score!</span></span>
+<span><span class="co">#&gt; Feature MT.CO2 is not in score!</span></span>
+<span><span class="co">#&gt; Warning in gs_score_init(score = data, features = features): Feature ILF3.AS1 is not in score!</span></span>
+<span><span class="co">#&gt; Feature CEBPZ.AS1 is not in score!</span></span>
+<span><span class="co">#&gt; Feature RP11.1399P15.1 is not in score!</span></span>
+<span><span class="co">#&gt; Feature RP11.403A21.2 is not in score!</span></span>
+<span><span class="co">#&gt; Feature RP4.539M6.22 is not in score!</span></span>
+<span><span class="co">#&gt; Feature GS1.251I9.4 is not in score!</span></span>
+<span><span class="co">#&gt; Feature RP13.977J11.2 is not in score!</span></span>
+<span><span class="co">#&gt; Feature RP11.936I5.1 is not in score!</span></span>
+<span><span class="co">#&gt; Feature RP11.138A9.1 is not in score!</span></span>
+<span><span class="co">#&gt; Feature RP11.44N11.2 is not in score!</span></span>
+<span><span class="co">#&gt; Feature CTC.523E23.11 is not in score!</span></span>
+<span><span class="co">#&gt; Warning in gs_score_init(score = data, features = features): Feature PRKCQ.AS1 is not in score!</span></span>
+<span><span class="co">#&gt; Feature RP11.291B21.2 is not in score!</span></span>
+<span><span class="co">#&gt; Warning in gs_score_init(score = data, features = features): Feature RP11.367G6.3 is not in score!</span></span>
+<span><span class="co">#&gt; Feature CD27.AS1 is not in score!</span></span>
+<span><span class="co">#&gt; Feature RP11.879F14.2 is not in score!</span></span>
 <span></span>
 <span><span class="co">## saved score</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/row_colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html" class="external-link">colData</a></span><span class="op">(</span><span class="va">sce</span><span class="op">)</span><span class="op">)</span></span>
@@ -514,7 +568,7 @@ type from all others.</p>
 <span>  <span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">Group</span>, y <span class="op">=</span> <span class="va">score</span>, fill <span class="op">=</span> <span class="va">Group</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_boxplot.html" class="external-link">geom_boxplot</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html" class="external-link">facet_wrap</a></span><span class="op">(</span><span class="op">~</span><span class="va">`group markers`</span>, scales <span class="op">=</span> <span class="st">"free_x"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html" class="external-link">facet_wrap</a></span><span class="op">(</span><span class="op">~</span><span class="va">`group markers`</span>, scales <span class="op">=</span> <span class="st">"free_y"</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_bw</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html" class="external-link">theme</a></span><span class="op">(</span>axis.text.x <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_text</a></span><span class="op">(</span>angle <span class="op">=</span> <span class="fl">45</span>, hjust <span class="op">=</span> <span class="fl">1</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p><img src="workshop_smartid_casestudy_files/figure-html/unnamed-chunk-8-1.png" class="r-plt" width="960"></p>

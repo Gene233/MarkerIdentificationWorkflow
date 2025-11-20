@@ -58,18 +58,7 @@ Imports:
     SummarizedExperiment,
     TENxPBMCData,
     tidyr,
-    utils
-Suggests: 
-    pkgdown,
-    rmarkdown,
-    BiocStyle,
-    dbscan,
-    ggpubr,
-    knitr,
-    rmarkdown,
-    scater,
-    splatter,
-    testthat (>= 3.0.0),
+    utils,
     tidytext,
     UpSetR,
     clusterProfiler,
@@ -83,7 +72,17 @@ Suggests:
     jsonlite,
     RobustRankAggreg,
     rvest,
-    singscore
+    singscore,
+    BiocStyle,
+    dbscan,
+    ggpubr,
+    knitr,
+    rmarkdown,
+    scater,
+    splatter
+Suggests: 
+    pkgdown,
+    testthat (>= 3.0.0)
 URL: https://gene233.github.io/MarkerIdentificationWorkflow
 BugReports: https://github.com/gene233/MarkerIdentificationWorkflow/issues
 DockerImage: ghcr.io/gene233/markeridentificationworkflow:latest

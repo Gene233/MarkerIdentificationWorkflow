@@ -21,8 +21,7 @@ Authors@R:
         "Liyang",
         "Fei",
         email = "Liyang.Fei@petermac.org",
-        role = c("aut"),
-        comment = c(ORCID = '0000-0003-4864-7033')
+        role = c("aut")
       )
     )
 Description: TThis workflow package shows how to use mastR and smartid to identify markers from transcriptomic data. 

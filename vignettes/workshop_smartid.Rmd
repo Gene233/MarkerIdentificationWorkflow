@@ -60,7 +60,7 @@ if (!requireNamespace("smartid", quietly = TRUE)) {
 
 ------------------------------------------------------------------------
 
-To show a quick start guide of `smartid`, here we use package `r BiocStyle::Biocpkg("splatter")` to simulate a scRNA-seq data of 1000 genes * 3000 cells. This data consists of 4 groups, each has 2% DEGs except Group 4, which has no DEG as a negative control group.
+To showcase the utility of `smartid`, we use package `r BiocStyle::Biocpkg("splatter")` to simulate a scRNA-seq data of 1000 genes * 3000 cells. This data consists of 4 groups, each has 2% DEGs except Group 4, which has no DEG as a negative control group. This provides a standard dataset for downstream analyses.
 
 ```{r set up, message=FALSE}
 library(smartid)
@@ -107,7 +107,7 @@ data_sim
   step 2. scale and transform scores  
   step 3. identify markers using expectation maximization (EM)  
 
-## Score Samples
+## 1. Score Samples
 
 The first step is to score all samples/cells by using specified approach. The score can be composed of 3 terms: TF (term/feature frequency), IDF (inverse document/cell frequency) and IAE (inverse average expression of features). Each term has a couple of available choices with different formats to suit labeled or un-labeled data. Users can use function `idf_iae_methods()` to see available methods for IDF/IAE term. More details of each term can be seen in help page of each function, e.g. `?idf`.
 
@@ -136,7 +136,7 @@ $$\mathbf{IAE_{i,j}} = \log(1+\frac{\mathrm{mean}(\hat N_{i,j\in D})}{\max(\math
 
 Where $D$ is the category of cell $j$; $\hat D$ is the category other than $D$.
 
-TF here stands for gene frequency, which is similar to CPM, while IDF represents the inverse cell/sample frequency for scRNA-seq data, and IAE is the inverse average expression of each gene across all cells or cells in each labeled group.
+TF here stands for gene frequency, which is similar to Counts Per Million (CPM), while IDF represents the inverse cell/sample frequency for scRNA-seq data, and IAE is the inverse average expression of each gene across all cells or cells in each labeled group.
 
 Another advantage of `smartid` is that it can start with raw counts data, with no need for pre-processed data. And the scoring is quite fast.
 
@@ -158,7 +158,7 @@ assays(data_sim)
 names(metadata(data_sim))
 ```
 
-## Scale and Transform Score
+## 2. Scale and Transform Score
 
 Scaling is needed to find the markers specific to the group, however, standard scaling might fail due to the rare populations. Here `smartid` uses a special scaling strategy `scale_mgm()`, which can scale imbalanced data by given group labels. By doing this, we can avoid the bias towards features with larger numerical ranges during feature selection.
 
@@ -205,7 +205,7 @@ sin_score_boxplot(
 SummarizedExperiment::elementMetadata(data_sim)[76, ]
 ```
 
-## Marker Selection
+## 3. Marker Selection
 
 As we can see from above, there is a distinctly different distribution of feature score between group with DEGs and without DEGs. And there is a clear separation (break point) between the real DEGs and non-DEGs.
 
@@ -271,7 +271,7 @@ Where IDF and IAE can be termed as:
 $$\mathbf{IDF_i} = \log(1+\mathrm{SD}(\mathbf{TF}_{i})*\frac{n}{n_i+1})$$
 $$\mathbf{IAE_i} = \log(1+\mathrm{SD}(\mathbf{TF}_{i})*\frac{n}{\sum_{j=1}^{n}\hat N_{i,j}+1})$$
 
-## Score Samples
+## 1. Score Samples
 
 Similarly, the first step is to score samples/cells using the specified method. This step also starts with raw counts data, without need for data pre-processing, which is quite convenient and fast.
 
@@ -292,7 +292,7 @@ assays(data_sim)
 names(metadata(data_sim))
 ```
 
-## Compute Overall Score for Gene-set
+## 2. Compute Overall Score for Gene-set
 
 To compare overall score of the given gene-set, we don't need to scale and transform score this time. Using `gs_score()` can easily compute the overall score for each cell based on the given gene-set list.
 

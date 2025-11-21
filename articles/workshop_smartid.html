@@ -146,11 +146,12 @@ function provided by <a href="https://cran.r-project.org/package=devtools" class
 <h2 id="prepare-data">Prepare Data<a class="anchor" aria-label="anchor" href="#prepare-data"></a>
 </h2>
 <hr>
-<p>To show a quick start guide of <code>smartid</code>, here we use
-package <em><a href="https://bioconductor.org/packages/3.23/splatter" class="external-link">splatter</a></em>
+<p>To showcase the utility of <code>smartid</code>, we use package
+<em><a href="https://bioconductor.org/packages/3.23/splatter" class="external-link">splatter</a></em>
 to simulate a scRNA-seq data of 1000 genes * 3000 cells. This data
 consists of 4 groups, each has 2% DEGs except Group 4, which has no DEG
-as a negative control group.</p>
+as a negative control group. This provides a standard dataset for
+downstream analyses.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://davislaboratory.github.io/smartid" class="external-link">smartid</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://bioconductor.org/packages/SummarizedExperiment" class="external-link">SummarizedExperiment</a></span><span class="op">)</span></span>
@@ -222,7 +223,7 @@ steps:</strong></p>
 step 2. scale and transform scores<br>
 step 3. identify markers using expectation maximization (EM)</p>
 <div class="section level3">
-<h3 id="score-samples">Score Samples<a class="anchor" aria-label="anchor" href="#score-samples"></a>
+<h3 id="score-samples">1. Score Samples<a class="anchor" aria-label="anchor" href="#score-samples"></a>
 </h3>
 <p>The first step is to score all samples/cells by using specified
 approach. The score can be composed of 3 terms: TF (term/feature
@@ -271,10 +272,10 @@ is the category of cell
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mover><mi>D</mi><mo accent="true">̂</mo></mover><annotation encoding="application/x-tex">\hat D</annotation></semantics></math>
 is the category other than
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>D</mi><annotation encoding="application/x-tex">D</annotation></semantics></math>.</p>
-<p>TF here stands for gene frequency, which is similar to CPM, while IDF
-represents the inverse cell/sample frequency for scRNA-seq data, and IAE
-is the inverse average expression of each gene across all cells or cells
-in each labeled group.</p>
+<p>TF here stands for gene frequency, which is similar to Counts Per
+Million (CPM), while IDF represents the inverse cell/sample frequency
+for scRNA-seq data, and IAE is the inverse average expression of each
+gene across all cells or cells in each labeled group.</p>
 <p>Another advantage of <code>smartid</code> is that it can start with
 raw counts data, with no need for pre-processed data. And the scoring is
 quite fast.</p>
@@ -291,7 +292,7 @@ quite fast.</p>
 <span>  <span class="op">)</span></span>
 <span><span class="op">)</span></span>
 <span><span class="co">#&gt;    user  system elapsed </span></span>
-<span><span class="co">#&gt;   0.254   0.005   0.259</span></span>
+<span><span class="co">#&gt;   0.251   0.009   0.260</span></span>
 <span></span>
 <span><span class="co">## score and tf,idf,iae all saved</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html" class="external-link">assays</a></span><span class="op">(</span><span class="va">data_sim</span><span class="op">)</span></span>
@@ -301,7 +302,7 @@ quite fast.</p>
 <span><span class="co">#&gt; [1] "Params"     "up_markers" "tf"         "idf"        "iae"</span></span></code></pre></div>
 </div>
 <div class="section level3">
-<h3 id="scale-and-transform-score">Scale and Transform Score<a class="anchor" aria-label="anchor" href="#scale-and-transform-score"></a>
+<h3 id="scale-and-transform-score">2. Scale and Transform Score<a class="anchor" aria-label="anchor" href="#scale-and-transform-score"></a>
 </h3>
 <p>Scaling is needed to find the markers specific to the group, however,
 standard scaling might fail due to the rare populations. Here
@@ -387,7 +388,7 @@ confident. Thus this gene won’t be selected by <code>smartid</code>.</p>
 <span><span class="co">#&gt; 1           1           1</span></span></code></pre></div>
 </div>
 <div class="section level3">
-<h3 id="marker-selection">Marker Selection<a class="anchor" aria-label="anchor" href="#marker-selection"></a>
+<h3 id="marker-selection">3. Marker Selection<a class="anchor" aria-label="anchor" href="#marker-selection"></a>
 </h3>
 <p>As we can see from above, there is a distinctly different
 distribution of feature score between group with DEGs and without DEGs.
@@ -515,7 +516,7 @@ use case:
 <p>Where IDF and IAE can be termed as:
 <math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mi>𝐈</mi><mi>𝐃</mi><msub><mi>𝐅</mi><mi>𝐢</mi></msub></mrow><mo>=</mo><mrow><mi mathvariant="normal">log</mi><mo>⁡</mo></mrow><mo stretchy="false" form="prefix">(</mo><mn>1</mn><mo>+</mo><mrow><mi mathvariant="normal">S</mi><mi mathvariant="normal">D</mi></mrow><mo stretchy="false" form="prefix">(</mo><msub><mrow><mi>𝐓</mi><mi>𝐅</mi></mrow><mi>i</mi></msub><mo stretchy="false" form="postfix">)</mo><mo>*</mo><mfrac><mi>n</mi><mrow><msub><mi>n</mi><mi>i</mi></msub><mo>+</mo><mn>1</mn></mrow></mfrac><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\mathbf{IDF_i} = \log(1+\mathrm{SD}(\mathbf{TF}_{i})*\frac{n}{n_i+1})</annotation></semantics></math><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mi>𝐈</mi><mi>𝐀</mi><msub><mi>𝐄</mi><mi>𝐢</mi></msub></mrow><mo>=</mo><mrow><mi mathvariant="normal">log</mi><mo>⁡</mo></mrow><mo stretchy="false" form="prefix">(</mo><mn>1</mn><mo>+</mo><mrow><mi mathvariant="normal">S</mi><mi mathvariant="normal">D</mi></mrow><mo stretchy="false" form="prefix">(</mo><msub><mrow><mi>𝐓</mi><mi>𝐅</mi></mrow><mi>i</mi></msub><mo stretchy="false" form="postfix">)</mo><mo>*</mo><mfrac><mi>n</mi><mrow><munderover><mo>∑</mo><mrow><mi>j</mi><mo>=</mo><mn>1</mn></mrow><mi>n</mi></munderover><msub><mover><mi>N</mi><mo accent="true">̂</mo></mover><mrow><mi>i</mi><mo>,</mo><mi>j</mi></mrow></msub><mo>+</mo><mn>1</mn></mrow></mfrac><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\mathbf{IAE_i} = \log(1+\mathrm{SD}(\mathbf{TF}_{i})*\frac{n}{\sum_{j=1}^{n}\hat N_{i,j}+1})</annotation></semantics></math></p>
 <div class="section level3">
-<h3 id="score-samples-1">Score Samples<a class="anchor" aria-label="anchor" href="#score-samples-1"></a>
+<h3 id="score-samples-1">1. Score Samples<a class="anchor" aria-label="anchor" href="#score-samples-1"></a>
 </h3>
 <p>Similarly, the first step is to score samples/cells using the
 specified method. This step also starts with raw counts data, without
@@ -532,7 +533,7 @@ need for data pre-processing, which is quite convenient and fast.</p>
 <span>  <span class="op">)</span></span>
 <span><span class="op">)</span></span>
 <span><span class="co">#&gt;    user  system elapsed </span></span>
-<span><span class="co">#&gt;   0.180   0.013   0.193</span></span>
+<span><span class="co">#&gt;   0.177   0.015   0.193</span></span>
 <span></span>
 <span><span class="co">## new score is saved and tf,idf,iae all updated</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html" class="external-link">assays</a></span><span class="op">(</span><span class="va">data_sim</span><span class="op">)</span></span>
@@ -542,7 +543,7 @@ need for data pre-processing, which is quite convenient and fast.</p>
 <span><span class="co">#&gt; [1] "Params"     "up_markers" "tf"         "idf"        "iae"</span></span></code></pre></div>
 </div>
 <div class="section level3">
-<h3 id="compute-overall-score-for-gene-set">Compute Overall Score for Gene-set<a class="anchor" aria-label="anchor" href="#compute-overall-score-for-gene-set"></a>
+<h3 id="compute-overall-score-for-gene-set">2. Compute Overall Score for Gene-set<a class="anchor" aria-label="anchor" href="#compute-overall-score-for-gene-set"></a>
 </h3>
 <p>To compare overall score of the given gene-set, we don’t need to
 scale and transform score this time. Using <code><a href="https://davislaboratory.github.io/smartid/reference/gs_score.html" class="external-link">gs_score()</a></code> can

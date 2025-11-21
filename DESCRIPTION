@@ -11,6 +11,13 @@ Authors@R:
         comment = c(ORCID = "0000-0001-7923-5723")
       ),
       person(
+        "Chin Wee",
+        "Tan",
+        email = "cwtan@wehi.edu.au",
+        role = c("aut"),
+        comment = c(ORCID = '0000-0001-9695-7218')
+      ),
+      person(
         "Liyang",
         "Fei",
         email = "Liyang.Fei@petermac.org",
